@@ -136,3 +136,10 @@ public class RestaurantConsumer {
     }
 }
 
+
+git init
+git remote add origin https://github.com/USERNAME/REPOSITORY.git
+git pull origin main
+git add .
+git commit -m "Added new data"
+git push origin main
