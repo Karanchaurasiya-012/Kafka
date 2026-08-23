@@ -144,3 +144,106 @@ git add .
 git commit -m "Added new data"
 git push origin main
 git pull origin main --allow-unrelated-histories --no-rebase
+
+
+==================== KAFKA COMPLETE LEARNING ROADMAP ====================
+
+🟢 LEVEL 1 — BASIC KAFKA
+1.  Broker
+2.  Cluster
+3.  Producer
+4.  Consumer
+5.  Topic
+6.  Message / Record
+7.  Key
+8.  Partition
+9.  Offset
+10. Consumer Group
+11. Leader / Follower
+12. Replication
+
+
+🟡 LEVEL 2 — PRODUCER SIDE
+13. KafkaTemplate
+14. ProducerRecord
+15. Serializer
+16. JSON Serialization
+17. Producer Acknowledgement (acks)
+18. Retries
+19. Idempotent Producer
+20. Batching
+21. Compression
+22. Partitioner
+
+
+🟠 LEVEL 3 — CONSUMER SIDE
+23. @KafkaListener
+24. ConsumerRecord
+25. Deserializer
+26. JSON Deserialization
+27. Auto Commit
+28. Manual Commit
+29. Offset Commit
+30. Consumer Poll
+31. Consumer Lag
+32. Consumer Rebalancing
+33. Partition Assignment
+
+
+🔵 LEVEL 4 — RELIABILITY / ERROR HANDLING
+34. Acknowledgement Mode
+35. Retry
+36. Error Handler
+37. Dead Letter Topic (DLT)
+38. @RetryableTopic
+39. Duplicate Messages
+40. Idempotency
+41. At-most-once Delivery
+42. At-least-once Delivery
+43. Exactly-once Delivery
+
+
+🟣 LEVEL 5 — KAFKA ARCHITECTURE
+44. Replication Factor
+45. ISR (In-Sync Replicas)
+46. Controller
+47. Broker Failure
+48. Partition Leader Election
+49. Data Retention
+50. Log Segment
+51. Log Compaction
+52. __consumer_offsets
+
+
+🔴 LEVEL 6 — ADVANCED KAFKA
+53. Transactions
+54. Exactly Once Semantics (EOS)
+55. Kafka Streams
+56. KStream
+57. KTable
+58. State Store
+59. Kafka Connect
+60. Source Connector
+61. Sink Connector
+62. Schema Registry
+63. Avro
+64. Protobuf
+
+
+🚀 LEVEL 7 — PRODUCTION / REAL WORLD
+65. Kafka Security
+66. SSL / TLS
+67. SASL
+68. ACL
+69. Authentication vs Authorization
+70. Monitoring
+71. Consumer Lag Monitoring
+72. Throughput
+73. Performance Tuning
+74. Partition Planning
+75. Replication Planning
+
+
+
+
+
