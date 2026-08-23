@@ -1,0 +1,63 @@
+spring.application.name=Lesson
+spring.kafka.bootstrap-servers=localhost:9092
+spring.kafka.consumer.group-id=order-group
+spring.kafka.consumer.auto-offset-reset=earliest
+
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
+
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+
+1.Config
+a)
+package com.lesson.config;
+
+import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.TopicBuilder;
+
+@Configuration
+public class KafkaConfig {
+    public NewTopic orderTopic(){
+        return TopicBuilder
+        .name("orders")
+        .partitions(3)
+        .replicas(1)
+        .build();
+    }
+}
+
+2.Service
+a)OrderProducer
+package com.lesson.service;
+
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderProducer {
+    private final KafkaTemplate<String,String> kafkaTemplate;
+    public OrderProducer(KafkaTemplate<String,String>kafkaTemplate){
+        this.kafkaTemplate=kafkaTemplate;
+    }
+    public void sendOrder(String userId,String order){
+        kafkaTemplate.send("orders",userId,order);
+    }
+}
+
+b)OrderConsumer
+package com.lesson.service;
+
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderConsumer {
+    @KafkaListener(topics = "orders",groupId = "order-group")
+    public void consumer(String message){
+        System.out.print("Message received"+message);
+    }
+}
+    
