@@ -1,0 +1,138 @@
+1.application.properties
+spring.application.name=Lesson
+spring.kafka.bootstrap-servers=localhost:9092
+
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+
+spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+
+2.controller
+a)
+package com.lesson.controler;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.lesson.model.Order;
+import com.lesson.service.OrderService;
+
+@RestController
+@RequestMapping("/oders")
+public class OrderControler {
+    private final OrderService orderService;
+    public OrderControler(OrderService orderService){
+        this.orderService=orderService;
+    }
+    @PostMapping
+    public String createOrder(@RequestBody Order order){
+        orderService.createOrder(order);
+        return "Order Place Successfully";
+    }
+}
+
+3.model
+a)
+package com.lesson.model;
+
+public class Order {
+    private Long orderId;
+    private String item;
+    private int quantity;
+    private double amount;
+
+    public void setOrderId(Long orderId){
+        this.orderId=orderId;
+    }
+    public Long getOrderId(){
+        return orderId;
+    }
+    public void setItem(String item){
+        this.item=item;
+    }
+    public String getItem(){
+        return item;
+    }
+    public void setQuantity(int quantity){
+        this.quantity=quantity;
+    }
+    public int getQuantity(){
+        return quantity;
+    }
+    public void setAmount(double amount){
+        this.amount=amount;
+    }
+    public double getAmount(){
+        return amount;
+    }
+}
+3.service
+a)
+package com.lesson.service;
+
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+import com.lesson.model.Order;
+
+@Service
+public class DeliveryConsumer {
+    @KafkaListener(topics = "orders",groupId = "delivery-group")
+    public void consumer(Order order){
+        System.out.println("Delivery boy get notification"+order.getOrderId());
+    }
+}
+
+b)
+package com.lesson.service;
+
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+import com.lesson.model.Order;
+
+@Service
+public class NotificationConsumer {
+    @KafkaListener(topics = "orders",groupId = "notifiaction-group")
+public void consumer(Order order){
+    System.out.println("Notification order"+order.getOrderId()+"received");
+}
+}
+
+c)
+package com.lesson.service;
+
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+import com.lesson.model.Order;
+
+@Service
+public class OrderService {
+    private final KafkaTemplate<String,Order> kafkaTemplate;
+    public OrderService(KafkaTemplate<String,Order>kafkaTemplate){
+        this.kafkaTemplate=kafkaTemplate;
+    }
+    public void createOrder(Order order){
+        kafkaTemplate.send("orders",order.getOrderId().toString(),order);
+        System.out.println("Oder is seted to kafka");
+    }
+}
+
+d)
+package com.lesson.service;
+
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+import com.lesson.model.Order;
+
+@Service
+public class RestaurantConsumer {
+    @KafkaListener(topics = "orders",groupId = "restaurant-group")
+    public void consumer(Order order){
+        System.out.println("Resturant get order"+order.getOrderId());
+    }
+}
+
